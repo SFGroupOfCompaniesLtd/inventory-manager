@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Security Groups -->
+        <record id="group_stock_movement_user" model="res.groups">
+            <field name="name">Stock Movement User</field>
+            <field name="category_id" ref="base.module_category_inventory_inventory"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_stock_movement_manager" model="res.groups">
+            <field name="name">Stock Movement Manager</field>
+            <field name="category_id" ref="base.module_category_inventory_inventory"/>
+            <field name="implied_ids" eval="[(4, ref('group_stock_movement_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_stock_movement_lot" model="res.groups">
+            <field name="name">Track lots and serial numbers on stock movements</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <record id="group_stock_movement_multi_locations" model="res.groups">
+            <field name="name">Manage multiple stock locations</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <!-- Record Rules -->
+        <record id="stock_movement_comp_rule" model="ir.rule">
+            <field name="name">Stock Movement multi-company rule</field>
+            <field name="model_id" ref="model_stock_movement"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="stock_movement_line_comp_rule" model="ir.rule">
+            <field name="name">Stock Movement Line multi-company rule</field>
+            <field name="model_id" ref="model_stock_movement_line"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="stock_movement_reason_comp_rule" model="ir.rule">
+            <field name="name">Stock Movement Reason multi-company rule</field>
+            <field name="model_id" ref="model_stock_movement_reason"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>
