@@ -64,17 +64,17 @@
                         </group>
                         <notebook>
                             <page string="Products" name="movement_lines">
-                                <field name="movement_line_ids" widget="section_and_note_one2many" mode="tree,kanban">
-                                    <tree string="Movement Lines" editable="bottom">
-                                        <field name="product_id"/>
-                                        <field name="description"/>
-                                        <field name="available_qty" readonly="1"/>
-                                        <field name="quantity"/>
-                                        <field name="product_uom_id" groups="uom.group_uom"/>
-                                        <field name="lot_id" attrs="{'required': [('product_tracking', 'in', ['lot', 'serial'])], 'invisible': [('product_tracking', '=', 'none')]}" groups="inventory_stock_movement.group_stock_movement_lot"/>
-                                        <field name="product_tracking" invisible="1"/>
-                                    </tree>
-                                </field>
+<field name="movement_line_ids" widget="section_and_note_one2many" mode="list,kanban">
+    <list string="Movement Lines" editable="bottom">
+        <field name="product_id"/>
+        <field name="description"/>
+        <field name="available_qty" readonly="1"/>
+        <field name="quantity"/>
+        <field name="product_uom_id" groups="uom.group_uom"/>
+        <field name="lot_id" attrs="{'required': [('product_tracking', 'in', ['lot', 'serial'])], 'invisible': [('product_tracking', '=', 'none')]}" groups="inventory_stock_movement.group_stock_movement_lot"/>
+        <field name="product_tracking" invisible="1"/>
+    </list>
+</field>
                             </page>
                             <page string="Notes" name="notes">
                                 <field name="notes" placeholder="Add internal notes..."/>
