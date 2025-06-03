@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_stock_movement">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2>Stock Movement <span t-field="o.name"/></h2>
+                            <div class="row mt32 mb32">
+                                <div class="col-4">
+                                    <strong>Date:</strong>
+                                    <span t-field="o.date"/>
+                                    <br/>
+                                    <strong>Movement Type:</strong>
+                                    <span t-field="o.movement_type"/>
+                                    <br/>
+                                    <strong>Status:</strong>
+                                    <span t-field="o.state"/>
+                                </div>
+                                <div class="col-4">
+                                    <strong>Source Location:</strong>
+                                    <span t-field="o.source_location_id"/>
+                                    <br/>
+                                    <strong>Destination Location:</strong>
+                                    <span t-field="o.destination_location_id"/>
+                                    <br/>
+                                    <t t-if="o.reason_id">
+                                        <strong>Reason:</strong>
+                                        <span t-field="o.reason_id"/>
+                                    </t>
+                                </div>
+                                <div class="col-4">
+                                    <strong>Responsible:</strong>
+                                    <span t-field="o.user_id"/>
+                                    <br/>
+                                    <strong>Scheduled Date:</strong>
+                                    <span t-field="o.scheduled_date"/>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Description</th>
+                                        <th class="text-right">Quantity</th>
+                                        <th groups="uom.group_uom">UoM</th>
+                                        <th groups="inventory_stock_movement.group_stock_movement_lot">Lot/Serial</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.movement_line_ids" t-as="line">
+                                        <td>
+                                            <span t-field="line.product_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.description"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                        <td groups="uom.group_uom">
+                                            <span t-field="line.product_uom_id"/>
+                                        </td>
+                                        <td groups="inventory_stock_movement.group_stock_movement_lot">
+                                            <span t-field="line.lot_id"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="row mt32 mb32" t-if="o.notes">
+                                <div class="col-12">
+                                    <strong>Notes:</strong>
+                                    <p t-field="o.notes"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="action_report_stock_movement" model="ir.actions.report">
+            <field name="name">Stock Movement</field>
+            <field name="model">stock.movement</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">inventory_stock_movement.report_stock_movement</field>
+            <field name="report_file">inventory_stock_movement.report_stock_movement</field>
+            <field name="binding_model_id" ref="model_stock_movement"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
