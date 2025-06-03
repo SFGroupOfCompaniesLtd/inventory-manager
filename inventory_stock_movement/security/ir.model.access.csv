@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_movement_user,stock.movement user,model_stock_movement,group_stock_movement_user,1,1,1,0
+access_stock_movement_manager,stock.movement manager,model_stock_movement,group_stock_movement_manager,1,1,1,1
+access_stock_movement_line_user,stock.movement.line user,model_stock_movement_line,group_stock_movement_user,1,1,1,0
+access_stock_movement_line_manager,stock.movement.line manager,model_stock_movement_line,group_stock_movement_manager,1,1,1,1
+access_stock_movement_reason_user,stock.movement.reason user,model_stock_movement_reason,group_stock_movement_user,1,0,0,0
+access_stock_movement_reason_manager,stock.movement.reason manager,model_stock_movement_reason,group_stock_movement_manager,1,1,1,1
+access_stock_movement_wizard_user,stock.movement.wizard user,model_stock_movement_wizard,group_stock_movement_user,1,1,1,0
+access_stock_movement_wizard_line_user,stock.movement.wizard.line user,model_stock_movement_wizard_line,group_stock_movement_user,1,1,1,0
