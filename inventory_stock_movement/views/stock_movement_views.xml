@@ -6,7 +6,7 @@
     <field name="name">stock.movement.list</field>
     <field name="model">stock.movement</field>
     <field name="arch" type="xml">
-        <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'" decoration-warning="state == 'confirmed'" string="Stock Movements" editable="false">
+        <list decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'" decoration-warning="state == 'confirmed'" string="Stock Movements" editable="false">
             <field name="name"/>
             <field name="date"/>
             <field name="movement_type"/>
@@ -17,7 +17,7 @@
             <field name="user_id"/>
             <field name="company_id" groups="base.group_multi_company"/>
             <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
-        </tree>
+        </list>
     </field>
 </record>
 
