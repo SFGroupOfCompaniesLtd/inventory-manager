@@ -6,7 +6,7 @@
     <field name="name">stock.movement.list</field>
     <field name="model">stock.movement</field>
     <field name="arch" type="xml">
-        <list decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'" decoration-warning="state == 'confirmed'" string="Stock Movements" editable="false">
+<list decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'" decoration-warning="state == 'confirmed'" string="Stock Movements" editable="bottom">
             <field name="name"/>
             <field name="date"/>
             <field name="movement_type"/>
