@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Stock Movement Line Tree View -->
+        <record id="view_stock_movement_line_tree" model="ir.ui.view">
+            <field name="name">stock.movement.line.tree</field>
+            <field name="model">stock.movement.line</field>
+            <field name="arch" type="xml">
+                <tree string="Movement Lines" create="0" edit="0">
+                    <field name="movement_id"/>
+                    <field name="product_id"/>
+                    <field name="description"/>
+                    <field name="quantity"/>
+                    <field name="product_uom_id" groups="uom.group_uom"/>
+                    <field name="lot_id" groups="inventory_stock_movement.group_stock_movement_lot"/>
+                    <field name="source_location_id"/>
+                    <field name="destination_location_id"/>
+                    <field name="date"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Stock Movement Line Search View -->
+        <record id="view_stock_movement_line_search" model="ir.ui.view">
+            <field name="name">stock.movement.line.search</field>
+            <field name="model">stock.movement.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Movement Lines">
+                    <field name="movement_id"/>
+                    <field name="product_id"/>
+                    <field name="lot_id" groups="inventory_stock_movement.group_stock_movement_lot"/>
+                    <field name="source_location_id"/>
+                    <field name="destination_location_id"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                    <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                    <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Product" name="product" context="{'group_by': 'product_id'}"/>
+                        <filter string="Movement" name="movement" context="{'group_by': 'movement_id'}"/>
+                        <filter string="Source Location" name="source_location" context="{'group_by': 'source_location_id'}"/>
+                        <filter string="Destination Location" name="destination_location" context="{'group_by': 'destination_location_id'}"/>
+                        <filter string="Status" name="status" context="{'group_by': 'state'}"/>
+                        <filter string="Date" name="date" context="{'group_by': 'date:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Stock Movement Line Action -->
+        <record id="action_stock_movement_line" model="ir.actions.act_window">
+            <field name="name">Movement Lines</field>
+            <field name="res_model">stock.movement.line</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="view_stock_movement_line_search"/>
+            <field name="context">{'search_default_done': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No stock movement lines found
+                </p>
+                <p>
+                    Stock movement lines are created when you register stock movements.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
