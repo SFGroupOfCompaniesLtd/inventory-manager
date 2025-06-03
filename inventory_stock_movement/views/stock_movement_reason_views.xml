@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Stock Movement Reason Tree View -->
+        <record id="view_stock_movement_reason_tree" model="ir.ui.view">
+            <field name="name">stock.movement.reason.tree</field>
+            <field name="model">stock.movement.reason</field>
+            <field name="arch" type="xml">
+                <tree string="Movement Reasons">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="movement_type"/>
+                    <field name="description"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="active" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Stock Movement Reason Form View -->
+        <record id="view_stock_movement_reason_form" model="ir.ui.view">
+            <field name="name">stock.movement.reason.form</field>
+            <field name="model">stock.movement.reason</field>
+            <field name="arch" type="xml">
+                <form string="Movement Reason">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="movement_type"/>
+                                <field name="active" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description" name="description">
+                                <field name="description" placeholder="Add a description..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Stock Movement Reason Search View -->
+        <record id="view_stock_movement_reason_search" model="ir.ui.view">
+            <field name="name">stock.movement.reason.search</field>
+            <field name="model">stock.movement.reason</field>
+            <field name="arch" type="xml">
+                <search string="Movement Reasons">
+                    <field name="name" string="Movement Reason" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                    <field name="movement_type"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Movement Type" name="movement_type" context="{'group_by': 'movement_type'}"/>
+                        <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Stock Movement Reason Action -->
+        <record id="action_stock_movement_reason" model="ir.actions.act_window">
+            <field name="name">Movement Reasons</field>
+            <field name="res_model">stock.movement.reason</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_stock_movement_reason_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a movement reason
+                </p>
+                <p>
+                    Movement reasons help categorize and explain the purpose of inventory movements.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
