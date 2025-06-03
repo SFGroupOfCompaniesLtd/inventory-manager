@@ -32,8 +32,8 @@
                         <button name="action_done" string="Validate" type="object" states="confirmed" class="oe_highlight"/>
                         <button name="action_cancel" string="Cancel" type="object" states="draft,confirmed"/>
                         <button name="action_draft" string="Set to Draft" type="object" states="cancelled"/>
-                        <button name="action_view_picking" string="View Transfer" type="object" class="oe_highlight" attrs="{'invisible': [('picking_id', '=', False)]}"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+<button name="action_view_picking" string="View Transfer" type="object" class="oe_highlight" modifiers="{'invisible': [['picking_id', '=', false]]}"/>
+<field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -51,8 +51,8 @@
                             <group>
                                 <field name="date"/>
                                 <field name="movement_type"/>
-                                <field name="reason_id" attrs="{'required': [('movement_type', '=', 'adjustment')]}"/>
-                                <field name="priority" widget="priority"/>
+<field name="reason_id" modifiers="{'required': [['movement_type', '=', 'adjustment']]}"/>
+<field name="priority" widget="priority"/>
                             </group>
                             <group>
                                 <field name="source_location_id"/>
@@ -71,7 +71,7 @@
         <field name="available_qty" readonly="1"/>
         <field name="quantity"/>
         <field name="product_uom_id" groups="uom.group_uom"/>
-        <field name="lot_id" attrs="{'required': [('product_tracking', 'in', ['lot', 'serial'])], 'invisible': [('product_tracking', '=', 'none')]}" groups="inventory_stock_movement.group_stock_movement_lot"/>
+<field name="lot_id" modifiers="{'required': [['product_tracking', 'in', ['lot', 'serial']]], 'invisible': [['product_tracking', '=', 'none']]}" groups="inventory_stock_movement.group_stock_movement_lot"/>
         <field name="product_tracking" invisible="1"/>
     </list>
 </field>
