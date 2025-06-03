@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for stock.movement -->
+        <record id="seq_stock_movement" model="ir.sequence">
+            <field name="name">Stock Movement</field>
+            <field name="code">stock.movement</field>
+            <field name="prefix">SM/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>
