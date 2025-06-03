@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Stock Movement List View -->
+        <record id="view_stock_movement_list" model="ir.ui.view">
+            <field name="name">stock.movement.list</field>
+            <field name="model">stock.movement</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'" decoration-warning="state == 'confirmed'" string="Stock Movements">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="movement_type"/>
+                    <field name="source_location_id"/>
+                    <field name="destination_location_id"/>
+                    <field name="product_count"/>
+                    <field name="total_quantity"/>
+                    <field name="user_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Stock Movement Form View -->
+        <record id="view_stock_movement_form" model="ir.ui.view">
+            <field name="name">stock.movement.form</field>
+            <field name="model">stock.movement</field>
+            <field name="arch" type="xml">
+                <form string="Stock Movement">
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object" states="draft" class="oe_highlight"/>
+                        <button name="action_done" string="Validate" type="object" states="confirmed" class="oe_highlight"/>
+                        <button name="action_cancel" string="Cancel" type="object" states="draft,confirmed"/>
+                        <button name="action_draft" string="Set to Draft" type="object" states="cancelled"/>
+                        <button name="action_view_picking" string="View Transfer" type="object" class="oe_highlight" attrs="{'invisible': [('picking_id', '=', False)]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object" name="action_view_picking" class="oe_stat_button" icon="fa-truck" attrs="{'invisible': [('picking_id', '=', False)]}">
+                                <field name="picking_id" invisible="1"/>
+                                <span>Transfer</span>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date"/>
+                                <field name="movement_type"/>
+                                <field name="reason_id" attrs="{'required': [('movement_type', '=', 'adjustment')]}"/>
+                                <field name="priority" widget="priority"/>
+                            </group>
+                            <group>
+                                <field name="source_location_id"/>
+                                <field name="destination_location_id"/>
+                                <field name="user_id"/>
+                                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                <field name="scheduled_date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products" name="movement_lines">
+                                <field name="movement_line_ids" widget="section_and_note_one2many" mode="tree,kanban">
+                                    <tree string="Movement Lines" editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="description"/>
+                                        <field name="available_qty" readonly="1"/>
+                                        <field name="quantity"/>
+                                        <field name="product_uom_id" groups="uom.group_uom"/>
+                                        <field name="lot_id" attrs="{'required': [('product_tracking', 'in', ['lot', 'serial'])], 'invisible': [('product_tracking', '=', 'none')]}" groups="inventory_stock_movement.group_stock_movement_lot"/>
+                                        <field name="product_tracking" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <field name="notes" placeholder="Add internal notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Stock Movement Search View -->
+        <record id="view_stock_movement_search" model="ir.ui.view">
+            <field name="name">stock.movement.search</field>
+            <field name="model">stock.movement</field>
+            <field name="arch" type="xml">
+                <search string="Stock Movements">
+                    <field name="name" string="Stock Movement" filter_domain="['|', ('name', 'ilike', self), ('notes', 'ilike', self)]"/>
+                    <field name="source_location_id"/>
+                    <field name="destination_location_id"/>
+                    <field name="user_id"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                    <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                    <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                    <separator/>
+                    <filter string="My Movements" name="my_movements" domain="[('user_id', '=', uid)]"/>
+                    <filter string="Urgent" name="urgent" domain="[('priority', '=', '1')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="status" context="{'group_by': 'state'}"/>
+                        <filter string="Movement Type" name="movement_type" context="{'group_by': 'movement_type'}"/>
+                        <filter string="Source Location" name="source_location" context="{'group_by': 'source_location_id'}"/>
+                        <filter string="Destination Location" name="destination_location" context="{'group_by': 'destination_location_id'}"/>
+                        <filter string="Responsible" name="responsible" context="{'group_by': 'user_id'}"/>
+                        <filter string="Movement Date" name="movement_date" context="{'group_by': 'date:month'}"/>
+                        <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Stock Movement Kanban View -->
+        <record id="view_stock_movement_kanban" model="ir.ui.view">
+            <field name="name">stock.movement.kanban</field>
+            <field name="model">stock.movement</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="movement_type"/>
+                    <field name="source_location_id"/>
+                    <field name="destination_location_id"/>
+                    <field name="user_id"/>
+                    <field name="state"/>
+                    <field name="priority"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong><field name="name"/></strong>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <field name="priority" widget="priority"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span><field name="movement_type"/></span>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <span class="badge rounded-pill" 
+                                              t-attf-class="badge-#{
+                                                  state == 'draft' ? 'secondary' : 
+                                                  state == 'confirmed' ? 'warning' : 
+                                                  state == 'done' ? 'success' : 'danger'}">
+                                            <field name="state"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span><t t-esc="record.source_location_id.value"/> → <t t-esc="record.destination_location_id.value"/></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span><field name="user_id"/></span>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <span><field name="date" widget="date"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Stock Movement Calendar View -->
+        <record id="view_stock_movement_calendar" model="ir.ui.view">
+            <field name="name">stock.movement.calendar</field>
+            <field name="model">stock.movement</field>
+            <field name="arch" type="xml">
+                <calendar string="Stock Movements" date_start="date" color="user_id">
+                    <field name="name"/>
+                    <field name="source_location_id"/>
+                    <field name="destination_location_id"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- Stock Movement Pivot View -->
+        <record id="view_stock_movement_pivot" model="ir.ui.view">
+            <field name="name">stock.movement.pivot</field>
+            <field name="model">stock.movement</field>
+            <field name="arch" type="xml">
+                <pivot string="Stock Movements Analysis">
+                    <field name="date" type="row" interval="month"/>
+                    <field name="movement_type" type="col"/>
+                    <field name="product_count" type="measure"/>
+                    <field name="total_quantity" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Stock Movement Graph View -->
+        <record id="view_stock_movement_graph" model="ir.ui.view">
+            <field name="name">stock.movement.graph</field>
+            <field name="model">stock.movement</field>
+            <field name="arch" type="xml">
+                <graph string="Stock Movements">
+                    <field name="date" interval="month"/>
+                    <field name="movement_type"/>
+                    <field name="total_quantity" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Stock Movement Action -->
+        <record id="action_stock_movement" model="ir.actions.act_window">
+            <field name="name">Stock Movements</field>
+            <field name="res_model">stock.movement</field>
+            <field name="view_mode">list,form,kanban,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="view_stock_movement_search"/>
+            <field name="context">{'search_default_draft': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new stock movement
+                </p>
+                <p>
+                    Track and manage the movement of inventory between locations.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
