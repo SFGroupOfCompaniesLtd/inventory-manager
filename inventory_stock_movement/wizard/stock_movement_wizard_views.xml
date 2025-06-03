@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Stock Movement Wizard Form View -->
+        <record id="view_stock_movement_wizard_form" model="ir.ui.view">
+            <field name="name">stock.movement.wizard.form</field>
+            <field name="model">stock.movement.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Stock Movement">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="movement_type"/>
+                                <field name="source_location_id"/>
+                                <field name="destination_location_id"/>
+                            </group>
+                            <group>
+                                <field name="scheduled_date"/>
+                                <field name="reason_id" attrs="{'required': [('movement_type', '=', 'adjustment')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products" name="products">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="description"/>
+                                        <field name="available_qty" readonly="1"/>
+                                        <field name="quantity"/>
+                                        <field name="product_uom_id" groups="uom.group_uom"/>
+                                        <field name="lot_id" attrs="{'required': [('product_tracking', 'in', ['lot', 'serial'])], 'invisible': [('product_tracking', '=', 'none')]}" groups="inventory_stock_movement.group_stock_movement_lot"/>
+                                        <field name="product_tracking" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <field name="notes" placeholder="Add notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button name="action_create_movement" string="Create" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Stock Movement Wizard Action -->
+        <record id="action_stock_movement_wizard" model="ir.actions.act_window">
+            <field name="name">Create Stock Movement</field>
+            <field name="res_model">stock.movement.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Stock Movement Wizard Menu -->
+        <menuitem id="menu_stock_movement_wizard"
+            name="Create Movement"
+            action="action_stock_movement_wizard"
+            parent="menu_stock_movement_root"
+            sequence="5"/>
+    </data>
+</odoo>
