@@ -2,24 +2,24 @@
 <odoo>
     <data>
         <!-- Stock Movement List View -->
-        <record id="view_stock_movement_list" model="ir.ui.view">
-            <field name="name">stock.movement.list</field>
-            <field name="model">stock.movement</field>
-            <field name="arch" type="xml">
-                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'" decoration-warning="state == 'confirmed'" string="Stock Movements">
-                    <field name="name"/>
-                    <field name="date"/>
-                    <field name="movement_type"/>
-                    <field name="source_location_id"/>
-                    <field name="destination_location_id"/>
-                    <field name="product_count"/>
-                    <field name="total_quantity"/>
-                    <field name="user_id"/>
-                    <field name="company_id" groups="base.group_multi_company"/>
-                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
-                </tree>
-            </field>
-        </record>
+<record id="view_stock_movement_list" model="ir.ui.view">
+    <field name="name">stock.movement.list</field>
+    <field name="model">stock.movement</field>
+    <field name="arch" type="xml">
+        <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancelled'" decoration-success="state == 'done'" decoration-warning="state == 'confirmed'" string="Stock Movements" editable="false">
+            <field name="name"/>
+            <field name="date"/>
+            <field name="movement_type"/>
+            <field name="source_location_id"/>
+            <field name="destination_location_id"/>
+            <field name="product_count"/>
+            <field name="total_quantity"/>
+            <field name="user_id"/>
+            <field name="company_id" groups="base.group_multi_company"/>
+            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
+        </tree>
+    </field>
+</record>
 
         <!-- Stock Movement Form View -->
         <record id="view_stock_movement_form" model="ir.ui.view">
