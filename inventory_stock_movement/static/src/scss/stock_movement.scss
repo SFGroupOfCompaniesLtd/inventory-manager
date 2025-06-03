@@ -1,0 +1,101 @@
+.o_stock_movement_dashboard {
+    .o_dashboard_card {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        margin-bottom: 16px;
+        padding: 16px;
+        
+        .o_dashboard_card_header {
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            
+            h4 {
+                margin: 0;
+            }
+        }
+        
+        .o_dashboard_count {
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .o_dashboard_label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+    }
+    
+    .o_movement_type_internal {
+        color: #28a745;
+    }
+    
+    .o_movement_type_incoming {
+        color: #17a2b8;
+    }
+    
+    .o_movement_type_outgoing {
+        color: #fd7e14;
+    }
+    
+    .o_movement_type_adjustment {
+        color: #6c757d;
+    }
+    
+    .o_dashboard_table {
+        width: 100%;
+        
+        th {
+            font-weight: 600;
+        }
+        
+        td, th {
+            padding: 8px 4px;
+        }
+        
+        tr:not(:last-child) {
+            border-bottom: 1px solid #f0f0f0;
+        }
+    }
+    
+    .o_dashboard_action_button {
+        background-color: #f8f9fa;
+        border: 1px solid #e5e5e5;
+        border-radius: 3px;
+        color: #343a40;
+        display: block;
+        margin-bottom: 8px;
+        padding: 12px;
+        text-align: center;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background-color: #e9ecef;
+            text-decoration: none;
+        }
+        
+        i {
+            margin-right: 5px;
+        }
+    }
+}
+
+// Movement status colors
+.o_movement_state_draft {
+    color: #6c757d;
+}
+
+.o_movement_state_confirmed {
+    color: #fd7e14;
+}
+
+.o_movement_state_done {
+    color: #28a745;
+}
+
+.o_movement_state_cancelled {
+    color: #dc3545;
+}
