@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Menu Items -->
+        <menuitem id="menu_stock_movement_root"
+            name="Stock Movements"
+            parent="stock.menu_stock_root"
+            sequence="6"/>
+
+        <menuitem id="menu_stock_movement"
+            name="Movements"
+            action="action_stock_movement"
+            parent="menu_stock_movement_root"
+            sequence="1"/>
+
+        <menuitem id="menu_stock_movement_line"
+            name="Movement Lines"
+            action="action_stock_movement_line"
+            parent="menu_stock_movement_root"
+            sequence="2"/>
+
+        <menuitem id="menu_stock_movement_configuration"
+            name="Configuration"
+            parent="menu_stock_movement_root"
+            sequence="100"/>
+
+        <menuitem id="menu_stock_movement_reason"
+            name="Movement Reasons"
+            action="action_stock_movement_reason"
+            parent="menu_stock_movement_configuration"
+            sequence="1"/>
+    </data>
+</odoo>
