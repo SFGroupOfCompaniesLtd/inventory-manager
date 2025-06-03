@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="StockMovementDashboard">
+        <div class="o_stock_movement_dashboard"/>
+    </t>
+
+    <t t-name="StockMovementDashboardContent">
+        <div class="container-fluid">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1>Stock Movement Dashboard</h1>
+                </div>
+            </div>
+            <div class="row">
+                <!-- State counts -->
+                <div class="col-lg-6">
+                    <div class="o_dashboard_card">
+                        <div class="o_dashboard_card_header">
+                            <h4>Movement Status</h4>
+                        </div>
+                        <div class="row">
+                            <t t-foreach="data.movement_states" t-as="state">
+                                <div class="col-6 col-sm-3 text-center mb-3">
+                                    <div t-attf-class="o_dashboard_count o_movement_state_#{state.state}">
+                                        <t t-esc="state.state_count"/>
+                                    </div>
+                                    <div class="o_dashboard_label">
+                                        <t t-if="state.state == 'draft'">Draft</t>
+                                        <t t-elif="state.state == 'confirmed'">Confirmed</t>
+                                        <t t-elif="state.state == 'done'">Done</t>
+                                        <t t-elif="state.state == 'cancelled'">Cancelled</t>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Movement type counts -->
+                <div class="col-lg-6">
+                    <div class="o_dashboard_card">
+                        <div class="o_dashboard_card_header">
+                            <h4>Movement Types</h4>
+                        </div>
+                        <div class="row">
+                            <t t-foreach="data.movement_types" t-as="type">
+                                <div class="col-6 col-sm-3 text-center mb-3">
+                                    <div t-attf-class="o_dashboard_count o_movement_type_#{type.movement_type}">
+                                        <t t-esc="type.movement_type_count"/>
+                                    </div>
+                                    <div class="o_dashboard_label">
+                                        <t t-if="type.movement_type == 'internal'">Internal</t>
+                                        <t t-elif="type.movement_type == 'incoming'">Incoming</t>
+                                        <t t-elif="type.movement_type == 'outgoing'">Outgoing</t>
+                                        <t t-elif="type.movement_type == 'adjustment'">Adjustment</t>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <!-- Recent movements -->
+                <div class="col-lg-8">
+                    <div class="o_dashboard_card">
+                        <div class="o_dashboard_card_header d-flex justify-content-between align-items-center">
+                            <h4>Recent Movements</h4>
+                            <a href="#" class="o_stock_movement_dashboard_action" data-action="inventory_stock_movement.action_stock_movement">View All</a>
+                        </div>
+                        <table class="o_dashboard_table">
+                            <thead>
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Type</th>
+                                    <th>Products</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="data.recent_movements" t-as="movement">
+                                    <tr>
+                                        <td><t t-esc="movement.name"/></td>
+                                        <td><t t-esc="movement.movement_type"/></td>
+                                        <td><t t-esc="movement.product_count"/></td>
+                                        <td><t t-esc="movement.total_quantity"/></td>
+                                        <td t-attf-class="o_movement_state_#{movement.state}">
+                                            <t t-if="movement.state == 'draft'">Draft</t>
+                                            <t t-elif="movement.state == 'confirmed'">Confirmed</t>
+                                            <t t-elif="movement.state == 'done'">Done</t>
+                                            <t t-elif="movement.state == 'cancelled'">Cancelled</t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Quick actions -->
+                <div class="col-lg-4">
+                    <div class="o_dashboard_card">
+                        <div class="o_dashboard_card_header">
+                            <h4>Quick Actions</h4>
+                        </div>
+                        <a href="#" class="o_dashboard_action_button o_stock_movement_dashboard_action" data-action="inventory_stock_movement.action_stock_movement_wizard">
+                            <i class="fa fa-plus"></i> Create New Movement
+                        </a>
+                        <a href="#" class="o_dashboard_action_button o_stock_movement_dashboard_action" data-action="inventory_stock_movement.action_stock_movement_report">
+                            <i class="fa fa-chart-bar"></i> View Movement Analysis
+                        </a>
+                        <a href="#" class="o_dashboard_action_button o_stock_movement_dashboard_action" data-action="inventory_stock_movement.action_stock_movement_line">
+                            <i class="fa fa-list"></i> View Movement Lines
+                        </a>
+                        <a href="#" class="o_dashboard_action_button o_stock_movement_dashboard_action" data-action="inventory_stock_movement.action_stock_movement_reason">
+                            <i class="fa fa-tags"></i> Manage Movement Reasons
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
